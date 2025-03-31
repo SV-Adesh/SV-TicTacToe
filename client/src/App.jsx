@@ -46,9 +46,11 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-blue-50 to-indigo-100 flex flex-col">
-      <div className="w-full py-8 px-4">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-8 text-blue-700">Multiplayer Tic Tac Toe</h1>
+    <div className="min-h-screen w-full bg-gradient-to-b from-blue-50 to-indigo-100">
+      <div className="container mx-auto py-8 px-4">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-8 text-blue-700">
+          Multiplayer Tic Tac Toe
+        </h1>
         
         {!connected && (
           <div className="w-full max-w-2xl mx-auto bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-8">

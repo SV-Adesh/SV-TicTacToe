@@ -11,6 +11,7 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
 
   const handleCreateGame = () => {
     const newRoomId = generateRandomRoomId();
+    console.log('Creating new game with room ID:', newRoomId);
     handleJoinGame(newRoomId);
   };
 
@@ -24,12 +25,14 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
 
     setIsJoining(true);
     setError('');
+    console.log('Joining game with room ID:', roomToJoin);
 
     // Join the room
     socket.emit('joinGame', roomToJoin);
 
     // Set up event listeners for joining a game
     socket.once('gameJoined', (data) => {
+      console.log('Game joined:', data);
       setGameData({
         roomId: data.roomId,
         symbol: data.symbol,
@@ -44,12 +47,14 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
     });
 
     socket.once('roomFull', () => {
+      console.log('Room is full');
       setError('This room is full. Please try another room.');
       setIsJoining(false);
     });
 
     // Handle any connection errors
-    socket.once('connect_error', () => {
+    socket.once('connect_error', (err) => {
+      console.error('Connection error:', err);
       setError('Failed to connect to the server. Please try again.');
       setIsJoining(false);
     });

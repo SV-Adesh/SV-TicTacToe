@@ -9,6 +9,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   useEffect(() => {
     // Setup socket event listeners
     socket.on('gameStart', (data) => {
+      console.log('Game started:', data);
       setGameData(prevData => ({
         ...prevData,
         currentTurn: data.currentTurn,
@@ -19,6 +20,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     });
 
     socket.on('boardUpdate', (data) => {
+      console.log('Board updated:', data);
       setGameData(prevData => ({
         ...prevData,
         board: data.board,
@@ -27,6 +29,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     });
 
     socket.on('gameOver', (data) => {
+      console.log('Game over:', data);
       setGameData(prevData => ({
         ...prevData,
         board: data.board,
@@ -36,6 +39,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     });
 
     socket.on('gameRestart', (data) => {
+      console.log('Game restarted:', data);
       setGameData(prevData => ({
         ...prevData,
         board: data.board,
@@ -48,6 +52,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     });
 
     socket.on('playerDisconnected', () => {
+      console.log('Player disconnected');
       setDisconnected(true);
       setNotification('Other player has disconnected. Waiting for them to reconnect...');
     });
@@ -63,6 +68,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   }, [socket, setGameData]);
 
   const handleCellClick = (index) => {
+    console.log('Cell clicked:', index, 'Current turn:', gameData.currentTurn, 'Socket ID:', socket.id);
     // Prevent moves if it's not your turn or the game is over
     if (
       socket.id !== gameData.currentTurn || 
@@ -70,9 +76,11 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
       waitingForPlayer || 
       gameData.board[index] !== null
     ) {
+      console.log('Move prevented. Not your turn or invalid move.');
       return;
     }
 
+    console.log('Sending move to server:', { roomId: gameData.roomId, index });
     socket.emit('makeMove', {
       roomId: gameData.roomId,
       index
@@ -123,6 +131,9 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
       </div>
     );
   };
+
+  console.log('Game data:', gameData);
+  console.log('Board state:', gameData.board);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
