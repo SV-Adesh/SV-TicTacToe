@@ -164,9 +164,9 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   console.log('Board state:', gameData.board);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 animate-appear">
-      <div className="glass rounded-2xl p-6 md:p-10 shadow-2xl">
-        <div className="mb-8 flex flex-col sm:flex-row justify-between gap-4 items-center">
+    <div className="w-full max-w-4xl mx-auto px-4 animate-appear">
+      <div className="glass rounded-2xl p-6 md:p-8 shadow-2xl">
+        <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4 items-center">
           <div className="flex items-center gap-3">
             <div className="text-white text-lg font-semibold">Room:</div>
             <div className="flex items-center gap-2">
@@ -193,18 +193,18 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
           disabled={waitingForPlayer || disconnected || (gameData.currentTurn !== socket.id && !gameData.isGameOver)}
         />
 
-        <div className="mt-12 flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0 justify-center">
+        <div className="mt-8 flex flex-col sm:flex-row justify-center sm:space-x-6 space-y-4 sm:space-y-0">
           {gameData.isGameOver && (
             <button
               onClick={handleRestartGame}
-              className="w-full sm:w-64 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
+              className="w-full sm:w-64 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
             >
               Play Again
             </button>
           )}
           <button
             onClick={handleLeaveGame}
-            className="w-full sm:w-64 bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
+            className="w-full sm:w-64 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
           >
             Leave Game
           </button>
