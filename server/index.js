@@ -6,10 +6,8 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://sv-tic-tac-toe.vercel.app/'] // Update this with your Vercel URL once deployed
-    : '*',
-  methods: ['GET', 'POST'],
+  origin: '*',  // Allow all origins for now
+  methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true
 }));
 app.use(express.json());
@@ -17,10 +15,8 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' 
-      ? ['https://sv-tic-tac-toe.vercel.app/'] // Update this with your Vercel URL once deployed
-      : '*',
-    methods: ['GET', 'POST'],
+    origin: '*',  // Allow all origins for now
+    methods: ['GET', 'POST', 'OPTIONS'],
     credentials: true
   },
 });

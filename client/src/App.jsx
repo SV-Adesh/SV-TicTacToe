@@ -5,7 +5,13 @@ import Game from './components/Game';
 import config from './config';
 
 // Initialize socket with the server URL from config
-const socket = io(config.SERVER_URL);
+const socket = io(config.SERVER_URL, {
+  withCredentials: false,
+  extraHeaders: {
+    "my-custom-header": "abcd"
+  },
+  transports: ['websocket', 'polling']
+});
 
 function App() {
   const [connected, setConnected] = useState(false);
