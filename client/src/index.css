@@ -41,6 +41,9 @@ button {
 .game-board {
   transition: all 0.3s ease;
   transform: translateZ(0); /* Force hardware acceleration */
+  border: 2px solid #334155;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .game-cell {

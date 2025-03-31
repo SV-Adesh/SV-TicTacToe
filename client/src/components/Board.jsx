@@ -18,7 +18,7 @@ const Board = ({ board, onCellClick, disabled }) => {
   
   return (
     <div className="w-full flex justify-center items-center py-6">
-      <div className="game-board grid grid-cols-3 gap-2 md:gap-3 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+      <div className="game-board grid grid-cols-3 gap-1 md:gap-2 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         {board.map((cell, index) => (
           <div
             key={index}
@@ -27,11 +27,11 @@ const Board = ({ board, onCellClick, disabled }) => {
               if (!disabled && cell === null) onCellClick(index);
             }}
             className={`
-              game-cell aspect-square h-24 sm:h-28 md:h-32 lg:h-36
+              game-cell aspect-square h-20 sm:h-24 md:h-28 lg:h-32
               flex items-center justify-center font-bold
-              bg-gray-800/80 rounded-lg cursor-pointer shadow-2xl transition-all duration-300
-              ${disabled ? 'cursor-not-allowed opacity-70' : cell === null ? 'hover:scale-105 hover:shadow-2xl hover:bg-gray-700/90' : ''}
-              ${cell === 'X' ? 'border-cyan-500 border-2' : cell === 'O' ? 'border-pink-500 border-2' : 'border-gray-600 border-2'}
+              bg-gray-800/80 rounded-lg cursor-pointer shadow-lg transition-all duration-300
+              ${disabled ? 'cursor-not-allowed opacity-70' : cell === null ? 'hover:scale-105 hover:shadow-xl hover:bg-gray-700/90' : ''}
+              ${cell === 'X' ? 'border-cyan-500 border' : cell === 'O' ? 'border-pink-500 border' : 'border-gray-600 border'}
             `}
             data-cell-index={index}
           >
