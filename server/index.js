@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-url.vercel.app'] // Update this with your Vercel URL once deployed
+    ? ['https://sv-tic-tac-toe.vercel.app/'] // Update this with your Vercel URL once deployed
     : '*',
   methods: ['GET', 'POST'],
   credentials: true
@@ -18,7 +18,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production' 
-      ? ['https://your-frontend-url.vercel.app'] // Update this with your Vercel URL once deployed
+      ? ['https://sv-tic-tac-toe.vercel.app/'] // Update this with your Vercel URL once deployed
       : '*',
     methods: ['GET', 'POST'],
     credentials: true
