@@ -2,75 +2,133 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  background-color: #f9fafb;  /* Light gray background */
-}
-
-/* Add some global styles to ensure proper rendering */
+/* Reset and base styles */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+body {
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  min-height: 100vh;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* Custom utilities */
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.game-board {
+  transition: all 0.3s ease;
+}
+
+.game-cell {
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-cell:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-cell:hover:before {
+  opacity: 1;
+}
+
+.animate-appear {
+  animation: appearAnimation 0.4s ease-out forwards;
+}
+
+@keyframes appearAnimation {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
   }
-  a:hover {
-    color: #747bff;
+  70% {
+    transform: scale(1.1);
   }
-  button {
-    background-color: #f9f9f9;
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
+}
+
+/* Animation for X symbol */
+.x-symbol {
+  position: relative;
+}
+
+.x-symbol:after {
+  content: 'X';
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Animation for O symbol */
+.o-symbol {
+  position: relative;
+}
+
+.o-symbol:after {
+  content: 'O';
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .game-container {
+    padding: 1rem;
+  }
+}
+
+/* Winner animation */
+.winning-cell {
+  animation: winPulse 1.5s infinite;
+}
+
+@keyframes winPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); }
+  100% { transform: scale(1); }
 }
