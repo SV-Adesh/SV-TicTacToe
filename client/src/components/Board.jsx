@@ -8,8 +8,8 @@ const Board = ({ board, onCellClick, disabled }) => {
     
     return (
       <span 
-        className={`${cell === 'X' ? 'text-blue-500' : 'text-pink-500'} animate-appear`}
-        style={{ textShadow: `0 0 10px ${cell === 'X' ? '#3b82f6' : '#ec4899'}` }}
+        className={`${cell === 'X' ? 'text-cyan-300' : 'text-pink-300'} animate-appear text-5xl sm:text-6xl md:text-7xl`}
+        style={{ textShadow: `0 0 10px ${cell === 'X' ? '#38bdf8' : '#f472b6'}` }}
       >
         {cell}
       </span>
@@ -17,8 +17,8 @@ const Board = ({ board, onCellClick, disabled }) => {
   };
   
   return (
-    <div className="w-full flex justify-center items-center py-8">
-      <div className="game-board grid grid-cols-3 gap-3 md:gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+    <div className="w-full flex justify-center items-center py-6">
+      <div className="game-board grid grid-cols-3 gap-2 md:gap-3 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         {board.map((cell, index) => (
           <div
             key={index}
@@ -27,12 +27,13 @@ const Board = ({ board, onCellClick, disabled }) => {
               if (!disabled && cell === null) onCellClick(index);
             }}
             className={`
-              game-cell aspect-square h-20 sm:h-24 md:h-28 lg:h-32
-              flex items-center justify-center text-4xl sm:text-5xl md:text-6xl font-bold
-              bg-white/20 backdrop-blur-sm rounded-xl cursor-pointer shadow-xl transition-all duration-300
-              ${disabled ? 'cursor-not-allowed opacity-70' : cell === null ? 'hover:scale-105 hover:shadow-2xl hover:bg-white/30' : ''}
-              ${cell === 'X' ? 'border-blue-400 border-4' : cell === 'O' ? 'border-pink-400 border-4' : 'border-white/30 border-2'}
+              game-cell aspect-square h-24 sm:h-28 md:h-32 lg:h-36
+              flex items-center justify-center font-bold
+              bg-gray-800/80 rounded-lg cursor-pointer shadow-2xl transition-all duration-300
+              ${disabled ? 'cursor-not-allowed opacity-70' : cell === null ? 'hover:scale-105 hover:shadow-2xl hover:bg-gray-700/90' : ''}
+              ${cell === 'X' ? 'border-cyan-500 border-2' : cell === 'O' ? 'border-pink-500 border-2' : 'border-gray-600 border-2'}
             `}
+            data-cell-index={index}
           >
             {renderCellContent(cell, index)}
           </div>

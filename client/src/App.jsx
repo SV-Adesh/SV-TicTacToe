@@ -62,20 +62,20 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen game-container">
+    <div className="min-h-screen game-container pb-10">
       <div className="w-full mx-auto">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-8 text-white drop-shadow-lg">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 text-gray-100 drop-shadow-lg pt-6">
           Multiplayer Tic Tac Toe
         </h1>
         
         {connecting && (
-          <div className="w-full max-w-2xl mx-auto glass text-white px-6 py-4 rounded-lg mb-8 animate-pulse">
+          <div className="w-full max-w-lg mx-auto glass text-cyan-300 px-4 py-3 rounded-lg mb-6 animate-pulse">
             Connecting to server...
           </div>
         )}
 
         {!connected && !connecting && (
-          <div className="w-full max-w-2xl mx-auto bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-8 animate-appear">
+          <div className="w-full max-w-lg mx-auto bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-6 animate-appear">
             <p className="font-bold">Connection failed!</p>
             <p>Please check your internet connection and try again.</p>
             <button 

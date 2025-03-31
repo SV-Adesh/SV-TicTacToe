@@ -61,14 +61,14 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto glass rounded-2xl p-8 md:p-12 shadow-2xl animate-appear">
-      <div className="w-full max-w-2xl mx-auto">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-10 text-center text-white">Join or Create a Game</h2>
+    <div className="w-full max-w-xl mx-auto glass rounded-lg p-6 md:p-8 shadow-2xl animate-appear">
+      <div className="w-full mx-auto">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-center text-white">Join or Create a Game</h2>
         
-        <div className="mb-8">
+        <div className="mb-6">
           <label 
             htmlFor="roomId" 
-            className="block text-white text-lg font-bold mb-4"
+            className="block text-gray-300 text-lg font-bold mb-3"
           >
             Room ID
           </label>
@@ -78,21 +78,21 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
             value={roomId}
             onChange={(e) => setRoomId(e.target.value)}
             placeholder="Enter room ID to join"
-            className="shadow appearance-none bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-xl w-full py-5 px-6 text-white text-xl leading-tight focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-transparent transition-all placeholder-white/50"
+            className="shadow appearance-none bg-gray-800 border-2 border-gray-700 rounded-lg w-full py-4 px-5 text-white text-xl leading-tight focus:outline-none focus:ring-4 focus:ring-cyan-600/50 focus:border-transparent transition-all placeholder-gray-500"
           />
         </div>
 
         {error && (
-          <div className="mb-10 text-red-300 bg-red-500/20 p-4 rounded-xl text-lg font-medium animate-appear">
+          <div className="mb-8 text-red-300 bg-red-900/20 p-4 rounded-lg text-lg font-medium animate-appear">
             ⚠️ {error}
           </div>
         )}
 
-        <div className="flex flex-col space-y-8">
+        <div className="flex flex-col space-y-6">
           <button
             onClick={() => handleJoinGame()}
             disabled={isJoining}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-5 px-8 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
+            className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
           >
             {isJoining ? (
               <span className="flex items-center justify-center gap-3">
@@ -105,25 +105,25 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
             ) : 'Join Game'}
           </button>
           
-          <div className="relative my-4">
+          <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/30"></div>
+              <div className="w-full border-t border-gray-700"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="glass px-8 py-1 text-lg text-white/80 rounded-full">or</span>
+              <span className="bg-gray-800 px-6 py-1 text-lg text-gray-400 rounded-full">or</span>
             </div>
           </div>
           
           <button
             onClick={handleCreateGame}
             disabled={isJoining}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-5 px-8 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-pink-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
           >
             Create New Game
           </button>
         </div>
         
-        <p className="text-white/70 text-center mt-12 text-sm">
+        <p className="text-gray-400 text-center mt-10 text-sm">
           Invite a friend to play by sharing the room ID after creating a game.
         </p>
       </div>

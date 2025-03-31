@@ -108,16 +108,16 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   const getGameStatus = () => {
     if (waitingForPlayer) {
       return (
-        <div className="mb-8 text-white text-center animate-appear">
-          <div className="glass p-6 rounded-xl">
+        <div className="mb-6 text-white text-center animate-appear">
+          <div className="glass p-6 rounded-lg">
             <p className="text-xl font-semibold mb-4">Waiting for another player to join...</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <p className="text-lg">Share this Room ID:</p>
               <div className="flex items-center gap-2">
-                <span className="font-mono bg-white/20 px-4 py-2 rounded-lg font-bold">{gameData.roomId}</span>
+                <span className="font-mono bg-gray-800 px-4 py-2 rounded-lg font-bold">{gameData.roomId}</span>
                 <button 
                   onClick={copyRoomId} 
-                  className="bg-white/30 hover:bg-white/50 p-2 rounded-lg transition-colors"
+                  className="bg-gray-700 hover:bg-gray-600 p-2 rounded-lg transition-colors"
                   title="Copy to clipboard"
                 >
                   {copySuccess ? '✓' : '📋'}
@@ -131,7 +131,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
 
     if (disconnected) {
       return (
-        <div className="mb-8 text-red-500 glass bg-red-100/30 p-6 rounded-xl text-center text-lg font-semibold animate-appear">
+        <div className="mb-6 text-red-300 glass bg-red-900/30 p-6 rounded-lg text-center text-lg font-semibold animate-appear">
           {notification}
         </div>
       );
@@ -140,13 +140,13 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     if (gameData.isGameOver) {
       if (gameData.winner === 'draw') {
         return (
-          <div className="mb-8 glass bg-yellow-100/30 text-yellow-100 p-6 rounded-xl text-center text-2xl font-bold animate-appear">
+          <div className="mb-6 glass bg-amber-900/30 text-amber-200 p-6 rounded-lg text-center text-2xl font-bold animate-appear">
             Game ended in a draw!
           </div>
         );
       } else {
         return (
-          <div className={`mb-8 glass ${gameData.winner === gameData.symbol ? 'bg-green-100/30 text-green-100' : 'bg-red-100/30 text-red-100'} p-6 rounded-xl text-center text-2xl font-bold animate-appear`}>
+          <div className={`mb-6 glass ${gameData.winner === gameData.symbol ? 'bg-green-900/30 text-green-300' : 'bg-red-900/30 text-red-300'} p-6 rounded-lg text-center text-2xl font-bold animate-appear`}>
             {gameData.winner === gameData.symbol ? '🎉 You won! 🎉' : 'You lost!'}
           </div>
         );
@@ -154,7 +154,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
     }
 
     return (
-      <div className={`mb-8 glass ${gameData.currentTurn === socket.id ? 'bg-green-100/30 text-green-100' : 'bg-blue-100/30 text-blue-100'} p-6 rounded-xl text-center text-2xl font-bold animate-appear`}>
+      <div className={`mb-6 glass ${gameData.currentTurn === socket.id ? 'bg-cyan-900/30 text-cyan-300' : 'bg-gray-800/60 text-gray-300'} p-6 rounded-lg text-center text-2xl font-bold animate-appear`}>
         {gameData.currentTurn === socket.id ? 'Your turn' : 'Opponent\'s turn'}
       </div>
     );
@@ -164,24 +164,24 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   console.log('Board state:', gameData.board);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 animate-appear">
-      <div className="glass rounded-2xl p-6 md:p-8 shadow-2xl">
-        <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4 items-center">
+    <div className="w-full max-w-3xl mx-auto px-2 animate-appear">
+      <div className="glass rounded-lg p-4 md:p-6 shadow-2xl">
+        <div className="mb-4 flex flex-col sm:flex-row justify-between gap-4 items-center">
           <div className="flex items-center gap-3">
-            <div className="text-white text-lg font-semibold">Room:</div>
+            <div className="text-gray-300 text-lg font-semibold">Room:</div>
             <div className="flex items-center gap-2">
-              <span className="font-mono bg-white/20 px-3 py-1 rounded-lg text-white font-bold">{gameData.roomId}</span>
+              <span className="font-mono bg-gray-800 px-3 py-1 rounded-lg text-gray-200 font-bold">{gameData.roomId}</span>
               <button 
                 onClick={copyRoomId} 
-                className="bg-white/30 hover:bg-white/50 p-1 rounded-lg transition-colors text-sm"
+                className="bg-gray-700 hover:bg-gray-600 p-1 rounded-lg transition-colors text-sm"
                 title="Copy to clipboard"
               >
                 {copySuccess ? '✓' : '📋'}
               </button>
             </div>
           </div>
-          <div className="text-white text-xl font-semibold">
-            You are: <span className={`font-bold text-3xl ${gameData.symbol === 'X' ? 'text-blue-400' : 'text-pink-400'}`} style={{ textShadow: `0 0 10px ${gameData.symbol === 'X' ? '#3b82f6' : '#ec4899'}` }}>{gameData.symbol}</span>
+          <div className="text-gray-300 text-xl font-semibold">
+            You are: <span className={`font-bold text-3xl ${gameData.symbol === 'X' ? 'text-cyan-300' : 'text-pink-300'}`} style={{ textShadow: `0 0 10px ${gameData.symbol === 'X' ? '#38bdf8' : '#f472b6'}` }}>{gameData.symbol}</span>
           </div>
         </div>
 
@@ -193,18 +193,18 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
           disabled={waitingForPlayer || disconnected || (gameData.currentTurn !== socket.id && !gameData.isGameOver)}
         />
 
-        <div className="mt-8 flex flex-col sm:flex-row justify-center sm:space-x-6 space-y-4 sm:space-y-0">
+        <div className="mt-6 flex flex-col sm:flex-row justify-center sm:space-x-6 space-y-4 sm:space-y-0">
           {gameData.isGameOver && (
             <button
               onClick={handleRestartGame}
-              className="w-full sm:w-64 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
+              className="w-full sm:w-64 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
             >
               Play Again
             </button>
           )}
           <button
             onClick={handleLeaveGame}
-            className="w-full sm:w-64 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
+            className="w-full sm:w-64 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
           >
             Leave Game
           </button>
