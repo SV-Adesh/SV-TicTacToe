@@ -25,15 +25,24 @@ export default {
     'game-cell',
     'winning-cell',
     'bg-grid-pattern',
+    'animate-appear',
     {
       pattern: /bg-(slate|cyan|pink|purple|red|green|amber)-(900|800|700|600|500|400|300)/,
+      variants: ['hover', 'focus', 'active'],
     },
     {
       pattern: /text-(slate|cyan|pink|purple|red|green|amber)-(400|300|200)/,
+      variants: ['hover', 'focus'],
     },
     {
       pattern: /border-(slate|cyan|pink|purple|red|green|amber)-(500|400|300)/,
     },
+    {
+      pattern: /rounded-(xl|lg)/,
+    },
+    {
+      pattern: /shadow-/,
+    }
   ],
   plugins: [],
 }

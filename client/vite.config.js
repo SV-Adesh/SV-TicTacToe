@@ -18,6 +18,12 @@ export default defineConfig({
           vendor: ['react', 'react-dom', 'framer-motion'],
           socket: ['socket.io-client'],
         },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'assets/styles.[hash].css';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
       },
     },
     // Force CSS to be extracted into a file for better caching
@@ -32,7 +38,7 @@ export default defineConfig({
       },
     },
     // Properly extract CSS to avoid FOUC
-    postcss: true,
+    postcss: './postcss.config.js',
     devSourcemap: true,
   },
   // Configure for Vercel deployment

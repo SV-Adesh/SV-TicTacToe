@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: sv-tic-tac-toe-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: VITE_NODE_ENV
+        value: production
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html 

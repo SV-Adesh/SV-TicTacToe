@@ -5,11 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Multiplayer Tic-Tac-Toe game with real-time Socket.io connections" />
+    
+    <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Fallback Tailwind CSS from CDN in case of build issues -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" 
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+          crossorigin="anonymous">
+    
     <title>Tic-Tac-Toe Multiplayer | by adesh</title>
-    <!-- Critical CSS to prevent flash of unstyled content -->
+    
+    <!-- Critical CSS -->
     <style>
       body {
         margin: 0;
@@ -26,9 +35,37 @@
         border-radius: 16px;
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
+      #root {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
       .bg-grid-pattern {
         background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
         background-size: 30px 30px;
+      }
+      /* Game board fallback styles */
+      .game-board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 24rem;
+        margin: 0 auto;
+        background-color: rgba(30, 41, 59, 0.5);
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+      .game-cell {
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(51, 65, 85, 0.8);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
       }
     </style>
   </head>

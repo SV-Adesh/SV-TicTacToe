@@ -26,6 +26,21 @@ const preloadImages = () => {
   return images; // Keep reference to avoid garbage collection
 };
 
+// Ensure Tailwind CSS is loaded
+const injectFallbackStyles = () => {
+  const styleExists = document.querySelectorAll('style').length > 0 || 
+                     document.querySelectorAll('link[rel="stylesheet"]').length > 1;
+  
+  if (!styleExists) {
+    // No styles loaded, create emergency styles
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
+    document.head.appendChild(style);
+    console.log('Emergency styles injected!');
+  }
+};
+
 function App() {
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(true);
@@ -42,6 +57,9 @@ function App() {
   const [preloadedImages] = useState(preloadImages());
 
   useEffect(() => {
+    // Ensure styles are loaded
+    injectFallbackStyles();
+    
     // Setup socket event listeners
     socket.on('connect', () => {
       setConnected(true);
@@ -167,9 +185,9 @@ function App() {
         </main>
 
         <footer className="py-4 text-center text-slate-500 text-sm flex items-center justify-center gap-3">
-          <p>Made by SV-Adesh</p>
+          <p>Made by adesh</p>
           <a 
-            href="https://www.linkedin.com/in/s-v-adesh-29a78a239/" 
+            href="https://www.linkedin.com/in/adesh" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-slate-300 transition-colors"
