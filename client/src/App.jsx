@@ -16,6 +16,16 @@ const socket = io(config.SERVER_URL, {
   reconnectionDelay: 1000
 });
 
+// Preload images to avoid flicker
+const preloadImages = () => {
+  const images = [];
+  // Create a simple preloader for pattern backgrounds
+  const preloader = new Image();
+  preloader.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Ccircle cx='15' cy='15' r='1' fill='rgba(255, 255, 255, 0.1)'/%3E%3C/svg%3E`;
+  images.push(preloader);
+  return images; // Keep reference to avoid garbage collection
+};
+
 function App() {
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(true);
@@ -29,6 +39,7 @@ function App() {
     winner: null,
     isGameOver: false
   });
+  const [preloadedImages] = useState(preloadImages());
 
   useEffect(() => {
     // Setup socket event listeners

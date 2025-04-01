@@ -5,19 +5,35 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Generate source maps for better debugging
-    sourcemap: true,
-    // Ensure assets are properly referenced
+    // Ensure proper asset handling
+    outDir: 'dist',
     assetsDir: 'assets',
-    // Optimize chunks
-    chunkSizeWarningLimit: 1000,
+    // Generate source maps for easier debugging
+    sourcemap: true,
+    // Rollup options
+    rollupOptions: {
+      output: {
+        // Manually control chunk sizes
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'framer-motion'],
+          socket: ['socket.io-client'],
+        },
+      },
+    },
+    // Force CSS to be extracted into a file for better caching
+    cssCodeSplit: false,
   },
-  // Fix CSS processing
+  // Ensure CSS processing is properly done
   css: {
-    // Ensure postcss processes all CSS files
+    // Process @import statements
+    preprocessorOptions: {
+      css: { 
+        charset: false 
+      },
+    },
+    // Properly extract CSS to avoid FOUC
     postcss: true,
-    // Extract all CSS into separate files to avoid FOUC (Flash of Unstyled Content)
-    extract: true,
+    devSourcemap: true,
   },
   // Configure for Vercel deployment
   server: {
