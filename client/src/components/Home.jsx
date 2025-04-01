@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const Home = ({ socket, setGameData, setCurrentScreen }) => {
   const [roomId, setRoomId] = useState('');
@@ -61,38 +62,69 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto glass rounded-lg p-6 md:p-8 shadow-2xl animate-appear">
-      <div className="w-full mx-auto">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-center text-white">Join or Create a Game</h2>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-xl mx-auto glass rounded-xl p-8 shadow-2xl border border-slate-700/30"
+    >
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="w-full mx-auto"
+      >
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-center text-white">
+          Join or Create a Game
+        </h2>
         
         <div className="mb-6">
           <label 
             htmlFor="roomId" 
-            className="block text-gray-300 text-lg font-bold mb-3"
+            className="block text-slate-300 text-lg font-medium mb-3"
           >
             Room ID
           </label>
-          <input
-            id="roomId"
-            type="text"
-            value={roomId}
-            onChange={(e) => setRoomId(e.target.value)}
-            placeholder="Enter room ID to join"
-            className="shadow appearance-none bg-gray-800 border-2 border-gray-700 rounded-lg w-full py-4 px-5 text-white text-xl leading-tight focus:outline-none focus:ring-4 focus:ring-cyan-600/50 focus:border-transparent transition-all placeholder-gray-500"
-          />
+          <motion.div whileHover={{ scale: 1.02 }} className="relative">
+            <input
+              id="roomId"
+              type="text"
+              value={roomId}
+              onChange={(e) => setRoomId(e.target.value)}
+              placeholder="Enter room ID to join"
+              className="shadow appearance-none bg-slate-800/70 border-2 border-slate-700/80 rounded-xl w-full py-4 px-5 text-white text-xl leading-tight focus:outline-none focus:ring-4 focus:ring-cyan-600/50 focus:border-transparent transition-all placeholder-slate-500"
+            />
+            {roomId && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setRoomId('')}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-300"
+                title="Clear input"
+              >
+                ✕
+              </motion.button>
+            )}
+          </motion.div>
         </div>
 
         {error && (
-          <div className="mb-8 text-red-300 bg-red-900/20 p-4 rounded-lg text-lg font-medium animate-appear">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 text-red-300 bg-red-900/20 border border-red-900/50 p-4 rounded-xl text-base font-medium"
+          >
             ⚠️ {error}
-          </div>
+          </motion.div>
         )}
 
         <div className="flex flex-col space-y-6">
-          <button
-            onClick={() => handleJoinGame()}
+          <motion.button
+            whileHover={{ scale: 1.03, boxShadow: "0 10px 15px -3px rgba(56, 189, 248, 0.3)" }}
+            whileTap={{ scale: 0.97 }}
             disabled={isJoining}
-            className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
+            onClick={() => handleJoinGame()}
+            className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-4 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isJoining ? (
               <span className="flex items-center justify-center gap-3">
@@ -103,31 +135,38 @@ const Home = ({ socket, setGameData, setCurrentScreen }) => {
                 Joining...
               </span>
             ) : 'Join Game'}
-          </button>
+          </motion.button>
           
           <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-700"></div>
+              <div className="w-full border-t border-slate-700"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-gray-800 px-6 py-1 text-lg text-gray-400 rounded-full">or</span>
+              <span className="bg-slate-800 px-6 py-1 text-lg text-slate-400 rounded-full">or</span>
             </div>
           </div>
           
-          <button
-            onClick={handleCreateGame}
+          <motion.button
+            whileHover={{ scale: 1.03, boxShadow: "0 10px 15px -3px rgba(236, 72, 153, 0.3)" }}
+            whileTap={{ scale: 0.97 }}
             disabled={isJoining}
-            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-pink-500/50 transition-all duration-300 text-xl shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:shadow-lg"
+            onClick={handleCreateGame}
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-4 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-pink-500/50 transition-all duration-300 text-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Create New Game
-          </button>
+          </motion.button>
         </div>
         
-        <p className="text-gray-400 text-center mt-10 text-sm">
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ delay: 0.8 }}
+          className="text-slate-400 text-center mt-10 text-sm"
+        >
           Invite a friend to play by sharing the room ID after creating a game.
-        </p>
-      </div>
-    </div>
+        </motion.p>
+      </motion.div>
+    </motion.div>
   );
 };
 

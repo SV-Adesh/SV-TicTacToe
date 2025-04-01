@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Board from './Board';
 
 const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
@@ -6,6 +7,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   const [waitingForPlayer, setWaitingForPlayer] = useState(gameData.players < 2);
   const [disconnected, setDisconnected] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [showRestartButton, setShowRestartButton] = useState(false);
 
   useEffect(() => {
     // Setup socket event listeners
@@ -37,6 +39,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
         winner: data.winner,
         isGameOver: true
       }));
+      setShowRestartButton(true);
     });
 
     socket.on('gameRestart', (data) => {
@@ -50,6 +53,7 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
       }));
       setDisconnected(false);
       setNotification('');
+      setShowRestartButton(false);
     });
 
     socket.on('playerDisconnected', () => {
@@ -108,55 +112,104 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   const getGameStatus = () => {
     if (waitingForPlayer) {
       return (
-        <div className="mb-6 text-white text-center animate-appear">
-          <div className="glass p-6 rounded-lg">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 text-white text-center"
+        >
+          <div className="glass p-6 rounded-xl border border-slate-700/50">
             <p className="text-xl font-semibold mb-4">Waiting for another player to join...</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <p className="text-lg">Share this Room ID:</p>
               <div className="flex items-center gap-2">
-                <span className="font-mono bg-gray-800 px-4 py-2 rounded-lg font-bold">{gameData.roomId}</span>
-                <button 
+                <span className="font-mono bg-slate-800 px-4 py-2 rounded-lg font-bold">{gameData.roomId}</span>
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={copyRoomId} 
-                  className="bg-gray-700 hover:bg-gray-600 p-2 rounded-lg transition-colors"
+                  className="bg-slate-700 hover:bg-slate-600 p-2 rounded-lg transition-colors"
                   title="Copy to clipboard"
                 >
                   {copySuccess ? '✓' : '📋'}
-                </button>
+                </motion.button>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       );
     }
 
     if (disconnected) {
       return (
-        <div className="mb-6 text-red-300 glass bg-red-900/30 p-6 rounded-lg text-center text-lg font-semibold animate-appear">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 text-red-300 glass bg-red-900/30 p-6 rounded-xl text-center text-lg font-semibold"
+        >
           {notification}
-        </div>
+        </motion.div>
       );
     }
 
     if (gameData.isGameOver) {
       if (gameData.winner === 'draw') {
         return (
-          <div className="mb-6 glass bg-amber-900/30 text-amber-200 p-6 rounded-lg text-center text-2xl font-bold animate-appear">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-6 glass bg-amber-900/30 text-amber-200 p-6 rounded-xl text-center text-2xl font-bold"
+          >
             Game ended in a draw!
-          </div>
+          </motion.div>
         );
       } else {
+        const isWinner = gameData.winner === gameData.symbol;
         return (
-          <div className={`mb-6 glass ${gameData.winner === gameData.symbol ? 'bg-green-900/30 text-green-300' : 'bg-red-900/30 text-red-300'} p-6 rounded-lg text-center text-2xl font-bold animate-appear`}>
-            {gameData.winner === gameData.symbol ? '🎉 You won! 🎉' : 'You lost!'}
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 400,
+              damping: 17
+            }}
+            className={`mb-6 glass ${isWinner ? 'bg-green-900/30 text-green-300' : 'bg-red-900/30 text-red-300'} p-6 rounded-xl text-center text-2xl font-bold`}
+          >
+            {isWinner ? (
+              <span className="flex flex-col items-center justify-center">
+                <span className="text-3xl mb-2">🎉 You Won! 🎉</span>
+                <span className="text-xl font-normal">Congratulations!</span>
+              </span>
+            ) : (
+              <span>You lost this round!</span>
+            )}
+          </motion.div>
         );
       }
     }
 
+    const isYourTurn = gameData.currentTurn === socket.id;
     return (
-      <div className={`mb-6 glass ${gameData.currentTurn === socket.id ? 'bg-cyan-900/30 text-cyan-300' : 'bg-gray-800/60 text-gray-300'} p-6 rounded-lg text-center text-2xl font-bold animate-appear`}>
-        {gameData.currentTurn === socket.id ? 'Your turn' : 'Opponent\'s turn'}
-      </div>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className={`mb-6 glass ${isYourTurn ? 'bg-cyan-900/30 text-cyan-300' : 'bg-slate-800/60 text-slate-300'} p-6 rounded-xl text-center flex flex-col items-center justify-center`}
+      >
+        <div className="mb-2 text-lg">
+          {isYourTurn ? "It's your turn!" : "Waiting for opponent..."}
+        </div>
+        <div className="flex items-center justify-center space-x-8 mt-1">
+          <div className={`player-indicator flex flex-col items-center ${gameData.symbol === 'X' ? 'text-cyan-400' : 'text-slate-400'}`}>
+            <span className="text-2xl font-bold" style={{ textShadow: gameData.symbol === 'X' ? '0 0 10px #38bdf8' : 'none' }}>X</span>
+            <span className="text-xs mt-1">{gameData.symbol === 'X' ? 'You' : 'Opponent'}</span>
+          </div>
+          <div className="text-slate-400">vs</div>
+          <div className={`player-indicator flex flex-col items-center ${gameData.symbol === 'O' ? 'text-pink-400' : 'text-slate-400'}`}>
+            <span className="text-2xl font-bold" style={{ textShadow: gameData.symbol === 'O' ? '0 0 10px #f472b6' : 'none' }}>O</span>
+            <span className="text-xs mt-1">{gameData.symbol === 'O' ? 'You' : 'Opponent'}</span>
+          </div>
+        </div>
+      </motion.div>
     );
   };
 
@@ -164,24 +217,50 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
   console.log('Board state:', gameData.board);
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-2 animate-appear">
-      <div className="glass rounded-lg p-4 md:p-6 shadow-2xl">
-        <div className="mb-4 flex flex-col sm:flex-row justify-between gap-4 items-center">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full max-w-3xl mx-auto px-2"
+    >
+      <div className="glass rounded-xl p-4 md:p-6 shadow-2xl border border-slate-700/30">
+        <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4 items-center">
           <div className="flex items-center gap-3">
-            <div className="text-gray-300 text-lg font-semibold">Room:</div>
+            <div className="text-slate-300 text-lg font-semibold">Room:</div>
             <div className="flex items-center gap-2">
-              <span className="font-mono bg-gray-800 px-3 py-1 rounded-lg text-gray-200 font-bold">{gameData.roomId}</span>
-              <button 
+              <span className="font-mono bg-slate-800 px-3 py-1 rounded-lg text-slate-200 font-bold">{gameData.roomId}</span>
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={copyRoomId} 
-                className="bg-gray-700 hover:bg-gray-600 p-1 rounded-lg transition-colors text-sm"
+                className="bg-slate-700 hover:bg-slate-600 p-1.5 rounded-lg transition-colors text-sm"
                 title="Copy to clipboard"
               >
                 {copySuccess ? '✓' : '📋'}
-              </button>
+              </motion.button>
             </div>
           </div>
-          <div className="text-gray-300 text-xl font-semibold">
-            You are: <span className={`font-bold text-3xl ${gameData.symbol === 'X' ? 'text-cyan-300' : 'text-pink-300'}`} style={{ textShadow: `0 0 10px ${gameData.symbol === 'X' ? '#38bdf8' : '#f472b6'}` }}>{gameData.symbol}</span>
+          <div className="player-symbol text-center">
+            <div className="text-slate-300 text-base font-medium mb-1">You are playing as</div>
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0],
+              }}
+              transition={{ 
+                duration: 0.5, 
+                ease: "easeInOut",
+                times: [0, 0.2, 0.8, 1],
+                repeatDelay: 5,
+                repeat: Infinity,
+              }}
+              className={`inline-block font-bold text-3xl ${gameData.symbol === 'X' ? 'text-cyan-400' : 'text-pink-400'} px-3 py-1 rounded-lg bg-slate-800/80`} 
+              style={{ 
+                textShadow: `0 0 10px ${gameData.symbol === 'X' ? '#38bdf8' : '#f472b6'}`,
+                boxShadow: `0 0 20px 0 ${gameData.symbol === 'X' ? 'rgba(56, 189, 248, 0.3)' : 'rgba(244, 114, 182, 0.3)'}`,
+              }}
+            >
+              {gameData.symbol}
+            </motion.div>
           </div>
         </div>
 
@@ -193,24 +272,33 @@ const Game = ({ socket, gameData, setGameData, setCurrentScreen }) => {
           disabled={waitingForPlayer || disconnected || (gameData.currentTurn !== socket.id && !gameData.isGameOver)}
         />
 
-        <div className="mt-6 flex flex-col sm:flex-row justify-center sm:space-x-6 space-y-4 sm:space-y-0">
-          {gameData.isGameOver && (
-            <button
-              onClick={handleRestartGame}
-              className="w-full sm:w-64 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              Play Again
-            </button>
-          )}
-          <button
+        <div className="mt-8 flex flex-col sm:flex-row justify-center sm:space-x-6 space-y-4 sm:space-y-0">
+          <AnimatePresence>
+            {(gameData.isGameOver || showRestartButton) && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(56, 189, 248, 0.4)" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleRestartGame}
+                className="w-full sm:w-64 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 text-lg shadow-lg"
+              >
+                Play Again
+              </motion.button>
+            )}
+          </AnimatePresence>
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(239, 68, 68, 0.4)" }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleLeaveGame}
-            className="w-full sm:w-64 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg hover:shadow-xl hover:scale-105"
+            className="w-full sm:w-64 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/50 transition-all duration-300 text-lg shadow-lg"
           >
             Leave Game
-          </button>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
