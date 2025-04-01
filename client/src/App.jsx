@@ -187,7 +187,7 @@ function App() {
         <footer className="py-4 text-center text-slate-500 text-sm flex items-center justify-center gap-3">
           <p>Made by adesh</p>
           <a 
-            href="https://www.linkedin.com/in/adesh" 
+            href="https://www.linkedin.com/in/s-v-adesh-29a78a239/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-slate-300 transition-colors"
